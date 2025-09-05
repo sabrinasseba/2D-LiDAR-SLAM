@@ -1,0 +1,77 @@
+# 2D LiDAR SLAM for Dynamic Environments: Real-Time Detection and Filtering of Moving Objects
+
+This repository contains the official implementation of the paper:
+
+
+> [**2D LiDAR SLAM for Dynamic Environments: Real-Time Detection and Filtering of Moving Objects**](https://www.researchgate.net/publication/395267813_2D_LiDAR_SLAM_for_Dynamic_Environments_Real-Time_Detection_and_Filtering_of_Moving_Objects),    
+> Sarah Dias, Sabrina Seba, Renan Moreira Pinto,    
+> João Carlos Virgolino, Marcelo Becker,      
+> *Presented in 28th International Congress of Mechanical Engineering (COBEM 2025)*  
+
+We introduce a real-time SLAM pipeline tailored for dynamic environments using solely 2D LiDAR scans. The proposed method enhances SLAM robustness and accuracy in partially dynamic scenarios by incorporating modules for moving object detection, tracking, and filtering. A lightweight filtering mechanism is integrated with the Hector SLAM algorithm, enabling the construction of cleaner and more consistent maps within simulated environments.
+
+It speacializes in tracking of rectangle shaped objects since the tracking and object detection module of this work is inspired by the [DATMO framework](https://github.com/kostaskonkk/datmo/tree/master) (Konstantinidis et al., 2020).
+
+The system can be represented by the following flowchart:
+
+<p align="center">
+  <img width="1000" height="600" src="https://github.com/sabrinasseba/2D-LiDAR-SLAM-teste/blob/main/assets/flowchart.png">
+</p>
+
+## Citation
+
+If you find our work useful, please consider citing our paper using the following BibTeX entry.
+
+```
+
+
+```
+
+## Installation
+
+This project is built and tested on Ubuntu 20.04 + ROS Noetic.
+
+1. Clone the repository into your ROS workspace
+
+```
+cd ~/catkin_ws/src
+git clone git@github.com:sabrinasseba/2D-LiDAR-SLAM.git
+```
+2. Build the workspace
+
+```
+cd ~/catkin_ws
+catkin_make
+source devel/setup.bash
+```
+## Running the simulation
+
+This repository does not include the robot or the simulated environments used in our work. To run the framework correctly, it is necessary a 2D LiDAR sensor. As for the environment, any simulated world containing 3 or less rectangular objects is suitable.
+
+Run the launch below and the gazebo will open with the visual environment and RViz will open with the LiDAR view.
+
+```
+roslaunch dynamic_lidar_detector dynamic_detection.launch
+```
+
+## Experimental Results 
+
+<p align="center">
+  <img width="1000" height="1000" src="https://github.com/sabrinasseba/2D-LiDAR-SLAM-teste/blob/main/assets/experiments.gif?raw=true">
+</p>
+
+The proposed 2D LiDAR SLAM system was evaluated in simulated environments with dynamic obstacles, using a robot equipped with a LiDAR sensor in Gazebo. Three configurations were analyzed: (1) unfiltered SLAM using raw scans, (2) filtering through fixed exclusion zones, and (3) adaptive filtering based on the estimated dimensions of moving objects.
+
+In the video above, the first frame illustrates the LiDAR scans of mobile objects along with their individual identifications, while the second frame presents the mapping process. It can be observed that the presence of dynamic obstacles did not compromise the quality of the generated map.
+
+The accuracy of the maps was quantitatively assessed using the Intersection over Union (IoU) and Weighted RMSE metrics, which demonstrated reduced local errors and enhanced map consistency when filtering techniques were applied.
+
+| Scenario | IoU (Unfiltered) | RMSE (Unfiltered) | IoU (Filtered) | RMSE (Filtered) |
+|----------|------------------|-------------------|----------------|------------------|
+| Test 1   | 0.2234           | 0.0362            | 0.1503         | 0.0115       |
+| Test 2   | 0.1133           | 0.1763            | 0.1044         | 0.1675       |
+| Test 3   | 0.1787           | 0.0303            | 0.1223         | 0.0205       |
+
+## License
+
+This code is released under the [MIT](https://opensource.org/license/mit) for academic usage.
